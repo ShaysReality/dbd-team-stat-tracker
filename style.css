@@ -1,0 +1,82 @@
+:root{
+  --bg:#0e1318; --panel:#141a20; --text:#e6edf3; --muted:#9aa4ad;
+  --accent:#00ffff; --accent2:#58a6ff; --danger:#ff4d4d; --border:#27313a;
+  --chip:#0b1016; --chipOn:#00ffff22; --chipBorder:#2a3540;
+}
+*{ box-sizing:border-box; }
+body{ margin:0; background:var(--bg); color:var(--text); font:14px/1.45 system-ui,Segoe UI,Roboto,Arial; }
+.app-header,.app-footer{ padding:12px 16px; background:#0a0f14; border-bottom:1px solid var(--border); }
+.app-footer{ border-top:1px solid var(--border); border-bottom:none; color:var(--muted); }
+.app-header h1{ margin:0 0 8px; font-size:22px; color:var(--accent); letter-spacing:.3px; }
+.actions{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+
+.btn{ background:var(--panel); border:1px solid var(--border); color:var(--text); padding:8px 12px; border-radius:8px; cursor:pointer; transition:.15s; }
+.btn:hover{ background:var(--accent); color:#000; border-color:var(--accent); }
+.btn-ghost{ background:transparent; }
+.btn-danger:hover{ background:var(--danger); border-color:var(--danger); color:#fff; }
+
+.filebtn{
+  position:relative; overflow:hidden; display:inline-flex; align-items:center;
+  gap:6px; padding:6px 10px; border:1px dashed var(--border); border-radius:8px; cursor:pointer; color:var(--muted);
+}
+.filebtn input{ position:absolute; inset:0; opacity:0; cursor:pointer; }
+
+.toggle{ display:inline-flex; align-items:center; gap:6px; color:var(--muted); }
+
+.layout{ display:grid; grid-template-columns:520px 1fr; gap:16px; padding:16px; }
+.panel{ background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:0 4px 16px rgba(0,0,0,.3); }
+h2{ margin:8px 0 12px; font-size:16px; color:var(--accent); }
+
+.stack{ display:flex; flex-direction:column; gap:10px; }
+.row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+
+input,select,textarea{ width:100%; padding:8px 10px; border-radius:8px; border:1px solid var(--border); background:#0d1117; color:#e6edf3; outline:none; }
+input::placeholder,textarea::placeholder{ color:#5f6a73; }
+
+.grid-4{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.grid-6{ display:grid; grid-template-columns:repeat(6,1fr); gap:8px; }
+.grid-1{ display:grid; grid-template-columns:1fr; gap:6px; }
+
+.table-wrap{ width:100%; overflow:auto; border:1px solid var(--border); border-radius:8px; }
+table{ width:100%; border-collapse:collapse; }
+th,td{ padding:8px 10px; border-bottom:1px solid var(--border); text-align:left; white-space:nowrap; }
+thead th{ position:sticky; top:0; background:#0f141a; z-index:1; }
+
+.stat{ background:#0b1016; border:1px solid var(--border); border-radius:10px; padding:12px; }
+.stat-label{ color:var(--muted); font-size:12px; }
+.stat-value{ font-size:24px; margin-top:6px; color:var(--accent2); }
+
+/* Survivor chips */
+.chip-wrap{ display:flex; flex-wrap:wrap; gap:8px; }
+.chip{
+  user-select:none; cursor:pointer; padding:6px 10px; border-radius:999px;
+  background:var(--chip); border:1px solid var(--chipBorder); color:#cbd5e1;
+}
+.chip.on{ background:var(--chipOn); border-color:var(--accent); color:var(--accent); }
+.hint{ color:var(--muted); }
+
+/* Survivor stats row: name + stage dropdown */
+.svr-row{ display:grid; grid-template-columns:2fr 1fr; gap:6px; }
+
+/* Chart + legend */
+canvas{ display:block; background:#0b1016; border:1px solid var(--border); border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,.35); }
+.chart-figure{ margin-top:8px; }
+.chart-caption{ margin-top:6px; color:var(--muted); font-size:12px; }
+.chart-legend{
+  display:flex; gap:14px; align-items:center; margin-top:8px; font-size:13px; color:#cbd5e1;
+}
+.swatch{
+  display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px;
+  border:1px solid var(--border);
+}
+.sw-esc{ background:#00ffff; }
+.sw-stg{ background:#58a6ff; }
+.sw-fr { background:#ff7b7b; }
+
+.hidden{ display:none !important; }
+
+@media (max-width: 1120px){
+  .layout{ grid-template-columns:1fr; }
+  .grid-6{ grid-template-columns:repeat(2,1fr); }
+}

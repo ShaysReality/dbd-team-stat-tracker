@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>DbD Stat Logger — Scrims & Tournaments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>DbD Stat Logger</h1>
+    <div class="actions">
+      <button id="btnExportCSV" class="btn">Export CSV</button>
+      <button id="btnExportJSON" class="btn">Export JSON</button>
+
+      <label class="filebtn">
+        Import JSON
+        <input id="fileJSON" type="file" accept=".json,application/json" />
+      </label>
+      <label class="filebtn">
+        Import CSV
+        <input id="fileCSV" type="file" accept=".csv,text/csv" />
+      </label>
+      <label class="toggle">
+        <input id="replaceMode" type="checkbox" />
+        <span>Replace existing on import</span>
+      </label>
+
+      <button id="btnClearAll" class="btn btn-danger">Clear All Data</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- LEFT: Team management + Match form -->
+    <section class="panel">
+      <h2>Teams</h2>
+      <form id="teamAddForm" class="row">
+        <input id="newTeamName" type="text" placeholder="Add team (e.g., Rival Esports)" />
+        <button class="btn" type="submit">Add Team</button>
+        <button id="btnDeleteTeam" class="btn btn-ghost" type="button">Delete Team</button>
+      </form>
+
+      <div class="row" style="margin-top:8px">
+        <label style="flex:1">Selected Team
+          <select id="teamSelect"></select>
+        </label>
+      </div>
+
+      <form id="memberAddForm" class="row" style="margin-top:8px">
+        <input id="memberName" type="text" placeholder="Add teammate to selected team" />
+        <button class="btn" type="submit">Add Member</button>
+        <button id="btnClearRoster" class="btn btn-ghost" type="button">Clear Roster</button>
+      </form>
+
+      <div class="table-wrap" style="margin-top:8px;">
+        <table id="rosterTable">
+          <thead><tr><th>#</th><th>Name</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <h2 style="margin-top:16px;">Add Match</h2>
+      <form id="matchForm" class="stack">
+        <div class="grid-3">
+          <label>Team
+            <select id="matchTeam" required></select>
+          </label>
+          <label>Map
+            <select id="matchMap"></select>
+          </label>
+          <label>Killer Pick
+            <select id="matchKiller"></select>
+          </label>
+        </div>
+
+        <div class="grid-3">
+          <label>Date/Time
+            <input id="matchDate" type="datetime-local" />
+          </label>
+          <label>Type
+            <select id="matchType">
+              <option>Scrim</option>
+              <option>Tournament</option>
+            </select>
+          </label>
+          <label>Opponent Team
+            <input id="matchOpponent" type="text" placeholder="e.g., Rival Esports" />
+          </label>
+        </div>
+
+        <div class="grid-3">
+          <label>Killer Player (our team)
+            <select id="killerPlayer"></select>
+          </label>
+          <label>Survivor Result (escapes)
+            <select id="survivorResult">
+              <option value="0">0 escapes</option>
+              <option value="1">1 escape</option>
+              <option value="2">2 escapes</option>
+              <option value="3">3 escapes</option>
+              <option value="4">4 escapes</option>
+            </select>
+          </label>
+          <div></div>
+        </div>
+
+        <!-- TOURNAMENT: Our Survivor Side -->
+        <fieldset id="fsSurvivorSide" class="stack hidden">
+          <legend>Our Survivor Side</legend>
+          <div class="stack">
+            <label>Survivors (click to select up to 4)</label>
+            <div id="survivorPick" class="chip-wrap"></div>
+            <small class="hint">Selected: <span id="selCount">0</span>/4</small>
+          </div>
+          <div class="stack">
+            <label>Per-Survivor Stages</label>
+            <div id="svrStats" class="grid-1"></div>
+          </div>
+
+          <div class="grid-4">
+            <label>Our Gens (while we were survivor)
+              <input id="ourGensInput" type="number" min="0" max="5" value="0" />
+            </label>
+            <div class="derived">
+              <div><strong>Opponent Killer Stages</strong>: <span id="oppKillerStagesView">0</span></div>
+              <div><strong>Opponent Fresh</strong>: <span id="oppKillerFreshView">0</span></div>
+            </div>
+            <div></div><div></div>
+          </div>
+
+          <div class="row">
+            <button class="btn btn-ghost" type="button" id="btnAutoFromStages">Auto-fill Opponent Killer Result from Survivor Stages</button>
+          </div>
+        </fieldset>
+
+        <!-- TOURNAMENT: Our Killer Side -->
+        <fieldset id="fsKillerSide" class="stack hidden">
+          <legend>Our Killer Side</legend>
+          <div class="grid-3">
+            <label>Our Killer Stages (0–12)
+              <input id="ourKillerStagesInput" type="number" min="0" max="12" value="0" />
+            </label>
+            <label>Our Fresh Stages (0–4)
+              <input id="ourKillerFreshInput" type="number" min="0" max="4" value="0" />
+            </label>
+            <label>Opponent Gens (vs our killer)
+              <input id="oppGensInput" type="number" min="0" max="5" value="0" />
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="row">
+          <button class="btn" type="submit">Add Match</button>
+          <button class="btn btn-ghost" type="button" id="btnDemo">Add Demo Matches</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- RIGHT: Filters + Tables + Chart -->
+    <section class="panel">
+      <h2>Filters</h2>
+      <div class="filters grid-6">
+        <label>Team
+          <select id="fTeam"></select>
+        </label>
+        <label>Map
+          <select id="fMap"></select>
+        </label>
+        <label>Killer
+          <select id="fKiller"></select>
+        </label>
+        <label>Type
+          <select id="fType">
+            <option value="">-- all types --</option>
+            <option>Scrim</option>
+            <option>Tournament</option>
+          </select>
+        </label>
+        <label>Opponent
+          <input id="fOpp" type="text" placeholder="Opponent contains…" />
+        </label>
+        <label>Player
+          <input id="fPlayer" type="text" placeholder="Survivor contains…" />
+        </label>
+      </div>
+      <div class="row">
+        <label>Date From <input id="fFrom" type="date" /></label>
+        <label>Date To <input id="fTo" type="date" /></label>
+        <button id="btnClearFilters" class="btn btn-ghost">Clear Filters</button>
+      </div>
+
+      <h2>Matches</h2>
+      <div class="table-wrap">
+        <table id="matchesTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Team</th>
+              <th>Type</th>
+              <th>Opponent</th>
+              <th>Map</th>
+              <th>Killer</th>
+              <th>Killer Player</th>
+              <th>Our Gens</th>
+              <th>Surv</th>
+              <th>OppK.Stg</th>
+              <th>OppK.Fr</th>
+              <th>OurK.Stg</th>
+              <th>OurK.Fr</th>
+              <th>Opp Gens</th>
+              <th>S1/S2/S3/S4 (name:stage)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <h2>Quick Stats (Filtered)</h2>
+      <div class="grid-3">
+        <div class="stat"><div class="stat-label">Avg Our Gens</div><div class="stat-value" id="sAvgOurGens">0</div></div>
+        <div class="stat"><div class="stat-label">Avg Opp Killer Stages</div><div class="stat-value" id="sAvgOppStages">0</div></div>
+        <div class="stat"><div class="stat-label">Avg Our Killer Stages</div><div class="stat-value" id="sAvgOurStages">0</div></div>
+      </div>
+
+      <h2>Visuals</h2>
+      <figure class="chart-figure">
+        <canvas id="chart" width="900" height="260"></canvas>
+        <figcaption class="chart-caption">
+          Recent Matches (filtered). Left axis is shared; dotted line marks 4 (cap for Escapes & Fresh Stages).
+        </figcaption>
+        <div class="chart-legend">
+          <span class="swatch sw-esc"></span> Escapes
+          <span class="swatch sw-stg"></span> Opp Killer Stages
+          <span class="swatch sw-fr"></span> Our Killer Stages
+        </div>
+      </figure>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <small>Scrim shows minimal fields • Tournament shows both sides • Dev notes inline.</small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
