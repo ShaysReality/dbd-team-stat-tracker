@@ -681,7 +681,7 @@
 
   // ---------- Demo & Clear ----------
   function addDemo() {
-    const team = state.selectedTeam || Object.keys(state.teams)[0] || 'Iridescent Rebirth';
+    const team = state.selectedTeam || Object.keys(state.teams)[0] || 'Iridescent';
     if (!state.teams[team]) state.teams[team] = { roster: ['Shay','Weeve','Styxlz','Danthrax','Saiko','Plasma'] };
     state.selectedTeam = team;
 
