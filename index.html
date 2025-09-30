@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>DbD Stat Logger — Scrims & Tournaments</title>
+  <title>DbD Stat Logger — v2.4</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -23,7 +23,7 @@
       </label>
       <label class="toggle">
         <input id="replaceMode" type="checkbox" />
-        <span>Replace existing on import</span>
+        <span>Replace on import</span>
       </label>
 
       <button id="btnClearAll" class="btn btn-danger">Clear All Data</button>
@@ -40,26 +40,26 @@
         <button id="btnDeleteTeam" class="btn btn-ghost" type="button">Delete Team</button>
       </form>
 
-      <div class="row" style="margin-top:8px">
-        <label style="flex:1">Selected Team
+      <div class="row mt8">
+        <label class="grow">Selected Team
           <select id="teamSelect"></select>
         </label>
       </div>
 
-      <form id="memberAddForm" class="row" style="margin-top:8px">
+      <form id="memberAddForm" class="row mt8">
         <input id="memberName" type="text" placeholder="Add teammate to selected team" />
         <button class="btn" type="submit">Add Member</button>
         <button id="btnClearRoster" class="btn btn-ghost" type="button">Clear Roster</button>
       </form>
 
-      <div class="table-wrap" style="margin-top:8px;">
-        <table id="rosterTable">
-          <thead><tr><th>#</th><th>Name</th><th></th></tr></thead>
+      <div class="table-wrap roster-wrap mt8">
+        <table id="rosterTable" class="roster-table">
+          <thead><tr><th>#</th><th>Name</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
 
-      <h2 style="margin-top:16px;">Add Match</h2>
+      <h2 class="mt16">Add Match</h2>
       <form id="matchForm" class="stack">
         <div class="grid-3">
           <label>Team
@@ -78,12 +78,12 @@
             <input id="matchDate" type="datetime-local" />
           </label>
           <label>Type
-            <select id="matchType">
+            <select id="matchType" class="type-compact">
               <option>Scrim</option>
               <option>Tournament</option>
             </select>
           </label>
-          <label>Opponent Team
+          <label class="opp-span">Opponent Team
             <input id="matchOpponent" type="text" placeholder="e.g., Rival Esports" />
           </label>
         </div>
@@ -103,6 +103,25 @@
           </label>
           <div></div>
         </div>
+
+        <!-- SCRIM: compact metrics -->
+        <fieldset id="fsScrim" class="stack hidden">
+          <legend>Scrim Metrics</legend>
+          <div class="grid-4">
+            <label>Our Gens
+              <input id="ourGensScrim" type="number" min="0" max="5" value="0" />
+            </label>
+            <label>Our Killer Stages
+              <input id="ourKillerStagesScrim" type="number" min="0" max="12" value="0" />
+            </label>
+            <label>Our Killer Fresh
+              <input id="ourKillerFreshScrim" type="number" min="0" max="4" value="0" />
+            </label>
+            <label>Opponent Gens
+              <input id="oppGensScrim" type="number" min="0" max="5" value="0" />
+            </label>
+          </div>
+        </fieldset>
 
         <!-- TOURNAMENT: Our Survivor Side -->
         <fieldset id="fsSurvivorSide" class="stack hidden">
@@ -180,7 +199,7 @@
           <input id="fOpp" type="text" placeholder="Opponent contains…" />
         </label>
         <label>Player
-          <input id="fPlayer" type="text" placeholder="Survivor contains…" />
+          <input id="fPlayer" type="text" placeholder="Survivor/Killer contains…" />
         </label>
       </div>
       <div class="row">
@@ -190,8 +209,8 @@
       </div>
 
       <h2>Matches</h2>
-      <div class="table-wrap">
-        <table id="matchesTable">
+      <div class="table-wrap matches-wrap">
+        <table id="matchesTable" class="matches-table">
           <thead>
             <tr>
               <th>Date</th>
@@ -224,9 +243,9 @@
 
       <h2>Visuals</h2>
       <figure class="chart-figure">
-        <canvas id="chart" width="900" height="260"></canvas>
+        <canvas id="chart"></canvas>
         <figcaption class="chart-caption">
-          Recent Matches (filtered). Left axis is shared; dotted line marks 4 (cap for Escapes & Fresh Stages).
+          Recent Matches (filtered). Dotted line marks 4 (cap for Escapes & Fresh Stages).
         </figcaption>
         <div class="chart-legend">
           <span class="swatch sw-esc"></span> Escapes
@@ -238,7 +257,7 @@
   </main>
 
   <footer class="app-footer">
-    <small>Scrim shows minimal fields • Tournament shows both sides • Dev notes inline.</small>
+    <small>Scrim shows compact metrics • Tournament shows both sides • Local-only storage.</small>
   </footer>
 
   <script src="script.js"></script>

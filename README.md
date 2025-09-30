@@ -1,112 +1,83 @@
-- Usage
+DbD Stat Logger — v2.4
 
-Clone the repo or download the files.
+A lightweight, local-only web app for Dead by Daylight scrim and tournament tracking.
+Manage teams, rosters, and match data, then filter, export, and visualize results.
 
-Open index.html in your browser
+Features
 
-Add your team + Roster
-Start loggin scrims and tournament matches.
+Team and Roster Management
 
-Export data to JSON/CSV as needed
+Add multiple teams and rosters
 
-All data is stored locally in your browser. Import/export lets you back it uup or share it with teammates
+Inline member removal without scrollbars
 
+Match Logging
 
-- Teams & Rosters
+Scrims: compact fields for escapes, gens, killer stages, fresh hooks
 
-Add multiple teams.
+Tournaments: full detail for survivor side and killer side
 
-Manage rosters (add/remove members).
+Survivor Tracking
 
-Select up to 4 survivors per match using clickable chips instead of clunky multi-selects.
+Pick up to 4 survivors per match
 
-- Match Logging
+Per-survivor stage inputs (0–3)
 
-Scrims:
+Auto-calculates opponent killer results
 
-Minimal flow: record Survivor Result (escapes) and who played killer.
+Filters and Stats
 
-Tournaments:
+Filter by team, map, killer, type, opponent, date range, or player
 
-Survivor Side:
+Quick averages for gens and stages
 
-Pick 4 survivors.
+Interactive chart of recent matches
 
-Assign each survivor their hook stage result (0 / 1st / 2nd / death).
+Import and Export
 
-App auto-calculates Opponent Killer Result (stages + fresh hooks).
+JSON or CSV formats
 
-Track how many gens your team popped.
+Merge or replace mode for imports
 
-Killer Side:
+Demo data for testing
 
-Enter our killer stages (0–12).
+Offline-First
 
-Enter our killer fresh hooks (0–4).
+Runs entirely in your browser
 
-Record how many gens the opponent team popped.
+Saves automatically to localStorage
 
-Killer player field is always available to link who played killer.
+Getting Started
+GitHub Pages
 
-- Filters
+Visit the GitHub Pages site for this repository and start logging matches directly in your browser.
 
-Filter matches by:
+Local Use
 
-Team
+Download or clone the repository and open index.html in your browser. No build tools or servers required.
 
-Map
+Version History
 
-Killer
+v2.4 (current)
 
-Type (Scrim/Tournament)
+Wider left panel with no wasted space
 
-Opponent name
+Opponent and Type fields fit correctly
 
-Player name
+Roster remove button inline with name
 
-Date range
+Added scrim metrics block
 
-- Tables & Stats
+Auto-resizing chart for all screens
 
-Matches Table: All logged matches with both survivor and killer side results.
+v2.3: UI polish, compact stats
 
-Quick Stats: Aggregated averages (our gens, opponent killer stages, our killer stages).
+v2.2: Responsive fit adjustments
 
-Per-survivor stages saved and exportable.
+v2.1: Aesthetic theme refresh
 
-- Visuals
+v2.0: Tournament support, survivor picker, import/export
 
-Chart with 3 tracked metrics:
+License
 
-Escapes (cyan)
-
-Opponent Killer Stages (blue)
-
-Our Killer Stages (red)
-
-Includes Y-axis ticks, grid lines, and dotted guide at 4 (cap for escapes/fresh).
-
-Legend + axis labels for clarity.
-
-- Import / Export
-
-Export to CSV (for Excel/Sheets) and JSON (for re-loading later).
-
-Import either CSV or JSON back in.
-
-Choose Replace (wipe current data) or Merge (append without duplicates).
-
-Matches include both sides’ results:
-
-survivor_result
-
-opp_killer_stages, opp_killer_fresh
-
-our_gens
-
-our_killer_stages, our_killer_fresh
-
-opp_gens
-
-Survivor roster results (s1_name / s1_stage … s4_name / s4_stage)
-
+MIT License. Free to use, modify, and share.
